@@ -4,7 +4,8 @@ let data = {
     errorMessage: '',
     viewSuccess: false,
     successful: false,
-    referralCode: localStorage.getItem('referral', '')
+    referralCode: localStorage.getItem('referral', ''),
+    referral_url: 'http://localhost:8000/?ref=' + localStorage.getItem('referral', '')
 }
 
 
@@ -13,6 +14,10 @@ var app = new Vue({
     el: '#referral_fields',
     data: data,
     methods: {
+        copyClick: function(){
+            const self = this;
+
+        },
         submitEmail: function(){
             const self = this;
             axios.get("https://api.ipdata.co").then(function (ip_results) {
@@ -46,6 +51,7 @@ var app = new Vue({
 
                     if (response.data.referral_code !== null){
                         self.referralCode = response.data.referral_code;
+                        self.referralCode = 'http://localhost:8000/?ref=' + response.data.referral_code;
                         localStorage.setItem('referral', response.data.referral_code)
                     }
                     console.log(response.data);
@@ -61,7 +67,7 @@ var app = new Vue({
     }
 })
 
-// console.log(data);
+
 if (data.referralCode !== '') {
     data.viewSuccess = true;
     app.$forceUpdate();

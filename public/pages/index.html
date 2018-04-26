@@ -34,7 +34,7 @@
             {{errorMessage}}
             <br>
             <span v-if="referralCode !== '' "> Your Referral Link Is:
-                <a href="http://funguana.com/?ref={{referralCode}}">http://funguana.com/?ref={{referralCode}}</a>
+<a v-bind:href="referral_url">http://funguana.com/?ref={{referralCode}}</a>
             </span>
         </div>
         <div v-else>
