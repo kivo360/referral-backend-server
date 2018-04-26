@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link rel="stylesheet" type="text/css" media="screen" href="main.css" /> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+    <script type="text/javascript">
+        function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var
+                regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2])
+                return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+    </script>
+</head>
+
+<body>
+    <div id="referral_fields">
+        <!-- Place things here -->
+        <div id="errors" v-if="viewSuccess === true">
+            {{errorMessage}}
+            <br>
+            <span v-if="referralCode !== '' "> Your Referral Link Is:
+                <a href="http://funguana.com/?ref={{referralCode}}">http://funguana.com/?ref={{referralCode}}</a>
+            </span>
+        </div>
+        <div v-else>
+
+        </div>
+
+        <div v-if="referralCode === '' ">
+            <input type="text" id="enter_email" v-model="email" placeholder="Enter Email">
+            <br>
+            <button v-on:click="submitEmail">Send Email</button>
+        </div>
+
+    </div>
+    <script src="../js/index.js">
+    </script>
+    <script type="text/javascript">
+        // $('#errors').hide();
+    </script>
+</body>
+
+</html>

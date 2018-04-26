@@ -2,7 +2,7 @@ from sanic import Sanic
 from sanic.response import json
 from sanic_cors import CORS, cross_origin
 from sanic_limiter import Limiter, get_remote_address
-from refer_file import add_user_with_filters
+from refer_file import add_user_with_filters, go_through_network
 import sys
 
 app = Sanic()
@@ -16,12 +16,32 @@ def get_request_userip(request):
     return request.json.get('user_ip', '')
 
 
-@app.route("/check", methods=["POST"]):
-    test_cookie = request.cookies.get('check')
+@limiter.limit("10/minute", key_func=get_request_userip)
+@limiter.limit("100/hour", key_func=get_request_userip)
+@app.route("/getUser", methods=["POST", "OPTIONS"])
+async def test(request):
+    if request.json is None:
+        return json({'msg': 'Not sending in anything'})
 
-@app.route("/register", methods=["POST"])
-@limiter.limit("4/minute", key_func=get_request_userip)
-@limiter.limit("15/hour", key_func=get_request_userip)
+
+    user_ip = request.json.get('user_ip', None)
+    email = request.json.get('email', None)
+
+
+    if user_ip is None:
+        return json({'msg': "User Ip address isn't here."});
+
+
+    if email is None:
+        return json({'msg': "Email isn't here."});
+
+    go_through_network(email)
+    return json({"msg": ''})
+
+
+@limiter.limit("10/minute", key_func=get_request_userip)
+@limiter.limit("50/hour", key_func=get_request_userip)
+@app.route("/register", methods=["POST", "OPTIONS"])
 async def test(request):
     if request.json is None:
         return json({'msg': 'Not sending in anything'})

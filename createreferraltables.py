@@ -6,26 +6,34 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
 
-from hashids import Hashids
-hashids = Hashids()
 
 Base = declarative_base()
 import os
 import binascii
 
+
+class User(Base):
+    __tablename__ = 'User'
+    uid = Column(String, primary_key=True)
+    email = Column(String(250), nullable=False, unique=True)
+
+    def __init__(self, email):
+        self.uid = str(uuid.uuid4())
+        self.email = email
+
 class Referral(Base):
     __tablename__ = 'Refer'
     # Here we define columns for the table person
     # Notice that each column is also a normal Python instance attribute.
-    uid = Column(String, primary_key=True)
-    email = Column(String(250), nullable=False, unique=True)
-    referral_code = Column(String(250), nullable=True)
-    referred_by = Column(String, nullable=True)
+    rid = Column(String, primary_key=True)
+    referral_code = Column(String(250), nullable=False)
+
+    uid = Column(String, ForeignKey("User.uid"), nullable=False)
+    referred_by = Column(String, ForeignKey("User.uid"), nullable=True)
     
-    def __init__(self, email, referred_by=None):
-        # hasher = hashlib.sha1(str(uuid.uuid4()))
-        self.uid = str(uuid.uuid4())
-        self.email = email
+    def __init__(self, uid, referred_by=None):
+        self.rid = str(uuid.uuid4())
+        self.uid = uid
         self.referral_code = binascii.b2a_hex(os.urandom(5))
         self.referred_by = referred_by
         

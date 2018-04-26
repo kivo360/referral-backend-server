@@ -1,12 +1,13 @@
+from sqlalchemy import func
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+
 from email_validator import validate_email, EmailNotValidError
 
 
+from createreferraltables import Base, Referral, User
 
-
-
-from createreferraltables import Base, Referral
+import sys
 
 engine = create_engine('sqlite:///referrals.db')
 # Bind the engine to the metadata of the Base class so that the
@@ -25,6 +26,12 @@ session = DBSession()
 
 # Insert a Person in the person table
 
+def go_through_network(user_email):
+    q = (session.query(User, Referral).filter(User.email == user_email)).all()
+    print(q)
+    # megaId, numOfComments = (session.query(Film.id, func.count(FilmComment.id))
+    #                             .join(FilmComment, Film.id == FilmComment.filmId)
+    #                             .group_by(Film.id).first())
 
 
 
@@ -32,8 +39,8 @@ session = DBSession()
 
 
 def add_user_with_filters(laemail, refer=None):
-    current_user = session.query(Referral).filter(
-        Referral.email == laemail).first()
+    current_user = session.query(User).filter(
+        User.email == laemail).first()
 
     if current_user is not None:
         return {
@@ -57,8 +64,14 @@ def add_user_with_filters(laemail, refer=None):
         }
 
     if refer is None:
-        referral = Referral(email=laemail)
         try:
+
+            user = User(laemail)
+            session.add(user)
+            session.commit()
+
+            
+            referral = Referral(user.uid)
             session.add(referral)
             session.commit()
             return {
@@ -78,9 +91,18 @@ def add_user_with_filters(laemail, refer=None):
             Referral.referral_code == refer).first()
         if ref is None:
             try:
-                referral = Referral(email=laemail)
+
+                user = User(laemail)
+                session.add(user)
+                session.commit()
+                
+
+
+                referral = Referral(user.uid)
                 session.add(referral)
                 session.commit()
+                print(referral, file=sys.stderr)
+
                 return {
                     'success': True,
                     'msg': 'Successfully added email. Here is your referral code',
@@ -95,7 +117,14 @@ def add_user_with_filters(laemail, refer=None):
                 }
         else:
             try:
-                referral = Referral(email=laemail, referred_by=refer)
+
+                user = User(email=laemail)
+                session.add(user)
+                session.commit()
+                print("User Id: ", user.uid, file=sys.stderr)
+                print(user.uid, file=sys.stderr)
+
+                referral = Referral(user.uid, referred_by=ref.uid)
                 session.add(referral)
                 session.commit()
                 return {
