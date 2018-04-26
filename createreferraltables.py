@@ -27,15 +27,16 @@ class Referral(Base):
     # Notice that each column is also a normal Python instance attribute.
     rid = Column(String, primary_key=True)
     referral_code = Column(String(250), nullable=False)
-
     uid = Column(String, ForeignKey("User.uid"), nullable=False)
     referred_by = Column(String, ForeignKey("User.uid"), nullable=True)
+    the_count = Column(Integer, nullable=False)
     
     def __init__(self, uid, referred_by=None):
         self.rid = str(uuid.uuid4())
         self.uid = uid
         self.referral_code = binascii.b2a_hex(os.urandom(5))
         self.referred_by = referred_by
+        self.the_count = 0
         
 
 

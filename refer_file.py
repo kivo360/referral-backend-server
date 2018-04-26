@@ -25,15 +25,30 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 # Insert a Person in the person table
+def go_through_network(email):
+    current_user = session.query(User).filter(
+        User.email == email
+    ).first()
 
-def go_through_network(user_email):
-    q = (session.query(User, Referral).filter(User.email == user_email)).all()
-    print(q)
-    # megaId, numOfComments = (session.query(Film.id, func.count(FilmComment.id))
-    #                             .join(FilmComment, Film.id == FilmComment.filmId)
-    #                             .group_by(Film.id).first())
-
-
+    
+    if current_user is None:
+        return {
+            'success': False,
+            'referral_code': None,
+            'reason': 'email',
+            'msg': "E-mail doesn't exist"
+        }
+    else:
+        current_referral = session.query(Referral).filter(
+            Referral.uid == current_user.uid
+        ).first()
+        return {
+            'success': True,
+            'referral_code': current_referral.referral_code,
+            'msg': "A thing"
+            # 'number_of_referrals': current_referral.the_count
+        }
+    pass
 
 # Insert an Address in the address table
 
@@ -52,7 +67,6 @@ def add_user_with_filters(laemail, refer=None):
     try:
         v = validate_email(laemail)  # validate and get info
         laemail = v["email"]  # replace with normalized form
-
 
     except EmailNotValidError:
         # email is not valid, exception message is human-readable
@@ -97,11 +111,10 @@ def add_user_with_filters(laemail, refer=None):
                 session.commit()
                 
 
-
                 referral = Referral(user.uid)
                 session.add(referral)
                 session.commit()
-                print(referral, file=sys.stderr)
+
 
                 return {
                     'success': True,
@@ -110,6 +123,8 @@ def add_user_with_filters(laemail, refer=None):
                 }
             except Exception:
                 session.rollback()
+
+
                 return {
                     'success': False,
                     'msg': 'Wasn\'t able to add referral code',
@@ -120,16 +135,20 @@ def add_user_with_filters(laemail, refer=None):
 
                 user = User(email=laemail)
                 session.add(user)
-                session.commit()
-                print("User Id: ", user.uid, file=sys.stderr)
-                print(user.uid, file=sys.stderr)
+                # session.commit()
+
 
                 referral = Referral(user.uid, referred_by=ref.uid)
                 session.add(referral)
+                # session.commit()
+                
+
+                ref.the_count += 1
                 session.commit()
+                session.flush()
                 return {
                     'success': True,
-                    'msg': 'successfully added email. Here is your referral code',
+                    'msg': 'Successfully added email. Here is your referral code.',
                     'referral_code': referral.referral_code
                 }
             except Exception:
@@ -139,8 +158,3 @@ def add_user_with_filters(laemail, refer=None):
                     'msg': 'Wasn\'t able to add referral code',
                     'reason': 'us'
                 }
-        
-
-
-
-# address.post_code

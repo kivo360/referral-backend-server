@@ -18,8 +18,8 @@ def get_request_userip(request):
 
 @limiter.limit("10/minute", key_func=get_request_userip)
 @limiter.limit("100/hour", key_func=get_request_userip)
-@app.route("/getUser", methods=["POST", "OPTIONS"])
-async def test(request):
+@app.route("/get_user", methods=["POST", "OPTIONS"])
+async def get_user(request):
     if request.json is None:
         return json({'msg': 'Not sending in anything'})
 
@@ -35,8 +35,8 @@ async def test(request):
     if email is None:
         return json({'msg': "Email isn't here."});
 
-    go_through_network(email)
-    return json({"msg": ''})
+    val = go_through_network(email)
+    return json(val)
 
 
 @limiter.limit("10/minute", key_func=get_request_userip)
