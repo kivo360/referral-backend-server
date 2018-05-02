@@ -54,6 +54,7 @@ def go_through_network(email):
 
 
 def add_user_with_filters(laemail, refer=None):
+    print(refer, file=sys.stderr)
     current_user = session.query(User).filter(
         User.email == laemail).first()
 
@@ -104,8 +105,16 @@ def add_user_with_filters(laemail, refer=None):
                 'reason': 500
             }
     elif refer is not None:
+        # print(refer, file=sys.stderr)
         ref = session.query(Referral).filter(
-            Referral.referral_code == refer).first()
+            Referral.referral_code == refer.encode()).first()
+        refs = session.query(Referral).all()
+        # print(refs, file=sys.stderr)
+        for reffie in refs:
+            # if reffie.referral_code is refer:
+            #     print("Hello World", file=sys.stderr)
+            print(reffie.referral_code, type(reffie.referral_code), file=sys.stderr)
+        print(ref, file=sys.stderr)
         if ref is None:
             try:
 
@@ -118,7 +127,8 @@ def add_user_with_filters(laemail, refer=None):
                 session.add(referral)
                 session.commit()
 
-
+                
+                
                 return {
                     'success': True,
                     'msg': 'Successfully added email. Here is your referral code',
@@ -135,16 +145,16 @@ def add_user_with_filters(laemail, refer=None):
                 }
         else:
             try:
-
+                print(ref.uid, file=sys.stderr)
                 user = User(email=laemail)
                 session.add(user)
                 # session.commit()
-
+                # print(ref.uid file=sys.stderr)
 
                 referral = Referral(user.uid, referred_by=ref.uid)
                 session.add(referral)
                 # session.commit()
-                
+                print(referral.referred_by, file=sys.stderr)
 
                 ref.the_count += 1
                 session.commit()

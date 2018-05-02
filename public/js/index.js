@@ -179,13 +179,8 @@ function activateHandlers(){
     })
     $(window).keyup(function () {
         data.email = $('#enterEmail').val();
-        // console.log(data.email);
     });
     
 }
-
-
-
-
 
 activateHandlers();

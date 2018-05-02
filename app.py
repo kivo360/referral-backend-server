@@ -47,19 +47,20 @@ async def test(request):
         return json({'msg': 'Not sending in anything'})
     user_ip = request.json.get('user_ip', None)
     email = request.json.get('email', None)
-    referred_by = request.json.get('referer', None)
-
+    referred_by = request.args.get('ref', None)
+    print(referred_by, file=sys.stderr)
     if user_ip is None:
         return json({'msg': "User Ip Address isn't here"});
     
     if email is None:
         return json({'msg': "Email doesn't exist"})    
     
+
     val = add_user_with_filters(email, referred_by)
     return json(val)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8000)
+    app.run(host="0.0.0.0", port=8000, debug=True)
 
 
 
