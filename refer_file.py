@@ -58,9 +58,12 @@ def add_user_with_filters(laemail, refer=None):
         User.email == laemail).first()
 
     if current_user is not None:
+        current_referral = session.query(Referral).filter(
+            Referral.uid == current_user.uid
+        ).first()
         return {
             'success': False,
-            'referral_code': None,
+            'referral_code': current_referral.referral_code,
             'reason': 'email',
             'msg': "That email already exist."
         }

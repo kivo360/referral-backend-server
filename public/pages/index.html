@@ -10,6 +10,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
 
 
     <script type="text/javascript">
@@ -28,25 +29,28 @@
 </head>
 
 <body>
-    <div id="referral_fields">
-        <!-- Place things here -->
-        <div id="errors" v-if="viewSuccess === true">
-            {{errorMessage}}
+    <div id="referralFields">
+        <div id="responseContainer">
+            <p id="responseMsg">.</p>
             <br>
-            <span v-if="referralCode !== '' "> Your Referral Link Is:
-<a v-bind:href="referral_url">http://funguana.com/?ref={{referralCode}}</a>
+            <span id="referralContainer">
+                <p>Your Referral Link Is:</p>
+                <a href="#" id="referralUrl">
+                </a>
             </span>
         </div>
-        <div v-else>
 
-        </div>
 
-        <div v-if="referralCode === '' ">
-            <input type="text" id="enter_email" v-model="email" placeholder="Enter Email">
+
+        <div id="emailContainer">
+            <input type="text" id="enterEmail" placeholder="Enter Email">
             <br>
-            <button v-on:click="submitEmail">Send Email</button>
+            <a id="emailSubmitButton" style="margin-top: 2rem;" class="btn btn--primary type--uppercase inner-link">
+                <span class="btn__text">
+                    Register Email
+                </span>
+            </a>
         </div>
-
     </div>
     <script src="../js/index.js">
     </script>
