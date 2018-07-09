@@ -1,0 +1,277 @@
+import hashlib
+import time
+import uuid
+from enum import Enum
+from copy import deepcopy
+from sqlalchemy.sql.expression import select, text
+
+import dataset
+import fire
+from validate_email import validate_email
+
+from referral.config import DB_URL, TESTDB
+
+salt = str("a6ecdd933b3842bcb467fed4073cb852")
+db = dataset.connect(TESTDB, row_type=dict)
+
+
+class StatusCodes(Enum):
+    OK = 200
+    CREATED = 201
+    ACCEPTED = 202
+    BADREQ = 400
+    UNAUTH = 401
+    FORBIDDEN = 403
+    NOTFOUND = 404
+    MYBAD = 500
+
+
+
+# ------------------------------------------------------------
+# ------------------ Global Functions ------------------------
+# ------------------------------------------------------------
+
+def hash_pass(password):
+    password = str(password)
+    hashed = hashlib.sha512((password + salt).encode('utf-8')).hexdigest()
+    return hashed
+
+
+
+
+
+def formatting(status, msg, data):
+    return {
+        "status": status,
+        "msg": msg,
+        "data": data
+    }
+
+
+
+class User(object):
+    def __init__(self):
+        self.userdb = db['user_referral']
+
+    def get_user_info(self, email):
+        # Only give information if the user is in the system
+        try:
+            # Make sure to return 500 if necessary
+            is_valid = validate_email(email)
+
+            if is_valid is False:
+                return formatting(StatusCodes.BADREQ.value, "Invalid Email Format", {})
+
+            self.current_user(email)
+            if self.user is None:
+                return formatting(StatusCodes.BADREQ.value, "User Doesn't Exist", {})
+
+            
+            utable = self.userdb.table
+            utable_alias = utable.alias()
+            # .where(utable.c.referred_by==email)
+            lvl1_query = select([
+                utable.c.email, 
+                utable.c.created_at
+            ]).where(
+                utable.c.referred_by==email
+            )
+
+            l1_alias = lvl1_query.cte().alias()
+            l2_query = select([
+                utable.c.email, 
+                utable.c.created_at
+            ]).where(utable_alias.c.referred_by==l1_alias.c.email)
+            
+            lvl_2_list = []
+            lvl_3_list = []
+            referred_list_lvl_1 = list(db.query(lvl1_query))
+            for l1_user in referred_list_lvl_1:
+                l2_query = select([
+                    utable_alias.c.email, 
+                    utable_alias.c.created_at
+                ]).where(utable_alias.c.referred_by==l1_user["email"])
+                l2_referred_list = list(db.query(l2_query))
+                for l2_user in l2_referred_list:
+                    lvl_2_list.append(l2_user)
+                
+            for l2_user in lvl_2_list:
+                l3_query = select([
+                    utable_alias.c.email, 
+                    utable_alias.c.created_at
+                ]).where(utable_alias.c.referred_by==l2_user["email"])
+                l3_referred_list = list(db.query(l3_query))
+                for l3_user in l3_referred_list:
+                    lvl_3_list.append(l3_user)
+
+            # Possible to cache here (do much later w/redis)
+            self.user.pop("password", None)
+
+            return formatting(StatusCodes.OK.value, "Referral Information", {
+                "referred": {
+                    "l1": {
+                        "count": len(referred_list_lvl_1),
+                        "list": referred_list_lvl_1
+                    },
+                    "l2": {
+                        "count": len(lvl_2_list),
+                        "list": lvl_2_list
+                    },
+                    "l3": {
+                        "count": len(lvl_3_list),
+                        "list": lvl_3_list
+                    }
+                },
+                "user": self.user
+            })
+        except Exception:
+            return formatting(StatusCodes.MYBAD.value, "Looks like an unexpected error occured", {})
+        
+    
+    def admin_remove(self, email):
+
+        try:
+            is_valid = validate_email(email)
+
+            if is_valid is False:
+                return formatting(StatusCodes.BADREQ.value, "Invalid Email Format", {})
+            
+            self.current_user(email)
+            
+            if self.user is None:
+                return formatting(StatusCodes.BADREQ.value, "User Doesn't Exist. ", {})
+
+            try:
+                self.userdb.delete(email=email)
+            except Exception:
+                return formatting(StatusCodes.MYBAD.value, "Shit Happened", {})
+            return formatting(StatusCodes.OK.value, "Successfully deleted", {})
+        except Exception:
+            return formatting(StatusCodes.MYBAD.value, "Looks like an unexpected error occured", {})
+
+
+        
+
+    def current_user(self, email):
+        # Set for now
+        self.user = None
+        self.user = self.userdb.find_one(email=email)
+        return self.user
+
+
+    def login(self, email, password):
+        try:
+            is_valid = validate_email(email)
+
+            if is_valid is False:
+                return formatting(StatusCodes.BADREQ.value, "Invalid Email Format", {})
+
+            self.current_user(email)
+            if self.user is None:
+                return formatting(StatusCodes.BADREQ.value, "User Doesn't Exist. Try Logging In", {})
+
+            hashed_password = hash_pass(password)
+            if hashed_password != self.user['password']:
+                return formatting(StatusCodes.UNAUTH.value, "Incorrect credentials", {})
+            
+            wo_pass = deepcopy(self.user)
+            wo_pass.pop('password', None)
+
+            return formatting(StatusCodes.OK.value, "Login Successful", wo_pass)
+        except Exception:
+            return formatting(StatusCodes.MYBAD.value, "Looks like an unexpected error occured", {})
+        
+
+
+
+
+
+    def register(self, email, password, confirm, referrer, first, last):
+        try:
+            is_valid = validate_email(email)
+
+            if is_valid is False:
+                return formatting(StatusCodes.BADREQ.value, "Invalid Email Format", {})
+
+
+            self.current_user(email)
+
+            if password != confirm:
+                return formatting(StatusCodes.BADREQ.value, "Passwords Don't Match", {})
+            
+
+            if self.user != None:
+                cp_user = deepcopy(self.user)
+                cp_user.pop("password", None)
+                return formatting(StatusCodes.ACCEPTED.value, "User Already Exist", cp_user)
+
+            # Check if the password and confirm match
+            
+
+            _referrer = None
+            referrer_email = None
+            if referrer is not None:
+                _referrer = self.userdb.find_one(referral_hash=referrer)
+                if _referrer is None:
+                    referrer_email = None
+                else:
+                    referrer_email = _referrer['email']
+
+
+
+            created_at = time.time()
+            hashed_password = hash_pass(password)
+            user_hash = hash_pass(email)
+
+            user_info = {
+                "email": email,
+                "password": hashed_password,
+                "referred_by": referrer_email,
+                "referral_hash":user_hash,
+                "first": first,
+                "last": last,
+                "created_at": created_at
+            }
+            try:
+                self.userdb.insert(user_info)
+            except Exception:
+                return formatting(StatusCodes.MYBAD.value, "Looks like something went wrong", {})
+
+            user_info.pop("password", None)
+
+            return formatting(StatusCodes.OK.value, "User successfully created", user_info)
+        except Exception:
+            return formatting(StatusCodes.MYBAD.value, "Looks like an unexpected error occured", {})
+        
+
+
+
+
+
+
+
+class DBCli(object):
+    def __init__(self):
+        """ Use class to Initialize the Database """
+        pass
+    
+    def init_all(self):
+        self.init_user()
+    
+    def drop_user_referral(self):
+        db['user_referral'].drop_table()
+
+    def init_user(self):
+        user_table = db.create_table("user_referral")
+        user_table.create_column('created_at', db.types.float)
+        user_table.create_column('referred_by', db.types.text)
+        user_table.create_column('referral_hash', db.types.text)
+        user_table.create_column('email', db.types.text)
+        user_table.create_column('password', db.types.text)
+        user_table.create_column('first', db.types.text)
+        user_table.create_column('last', db.types.text)
+
+
+
+if __name__ == "__main__":
+    fire.Fire(DBCli)
