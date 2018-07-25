@@ -4,5 +4,6 @@
   "test/test_user_database.py::test_user_login",
   "test/test_user_database.py::test_add_referrals",
   "test/test_user_database.py::test_get_referred",
-  "test/test_util.py::test_checks"
+  "test/test_util.py::test_checks",
+  "test/test_util.py::test_referral_hash"
 ]

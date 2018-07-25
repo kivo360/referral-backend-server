@@ -1,7 +1,11 @@
 from referral.database import User, hash_pass
 from contextlib import suppress
 import crayons as cy
+from faker import Faker
+fake = Faker()
+
 userlib = User()
+
 
 original_user_email = "kevin@ymail.com"
 original_user_password = "samplePassword"
@@ -45,11 +49,13 @@ def test_create_user():
     first = "Kevin"
     last = "Hill"
 
+    ipaddress = fake.ipv4_public(network=False, address_class=None)
+    # fake.ipv4_public(network=False, address_class=None)
 
-    incorrect_email = userlib.register(wrongEmail, password, password, None, first, last)
-    incorrect_confirm = userlib.register(original_user_email, password, wrongPassword, None, first, last)
-    valid_user = userlib.register(original_user_email, original_user_password, original_user_password, None, first, last)
-    should_exist = userlib.register(original_user_email, original_user_password, original_user_password, None, first, last)
+    incorrect_email = userlib.register(wrongEmail, password, password, None, first, last,ipaddress)
+    incorrect_confirm = userlib.register(original_user_email, password, wrongPassword, None, first, last, ipaddress)
+    valid_user = userlib.register(original_user_email, original_user_password, original_user_password, None, first, last, ipaddress)
+    should_exist = userlib.register(original_user_email, original_user_password, original_user_password, None, first, last, ipaddress)
 
     assert incorrect_email["status"] == 400
     assert incorrect_confirm["status"] == 400
@@ -90,7 +96,7 @@ def test_user_login():
 
     assert wrong_email_format["status"] == 400
     assert wrong_password["status"] == 401
-    assert non_existent["status"] == 400
+    assert non_existent["status"] in [400, 401]
     assert exist_user["status"] == 200
     
 
@@ -99,11 +105,13 @@ def test_user_login():
 def test_add_referrals():
     first = "Kevin"
     last = "Hill"
+    
     referrer_hash = "936f55cef131d54d769dea223b480e8707c76dd8eff1f37b8a758012181f646d6baf535ee9bf01c4c642a7e246bd01157f9b2ce1feb58ae989c01b56a52a8f01"
     print(cy.green("First Level Referral", bold=True), end="\n")
     print_line()
     for uemail in referr_email_list:
-        valid_user = userlib.register(uemail, other_pass, other_pass, referrer_hash, first, last)
+        ipaddress = fake.ipv4_public(network=False, address_class=None)
+        valid_user = userlib.register(uemail, other_pass, other_pass, referrer_hash, first, last, ipaddress)
         print(valid_user)
         assert valid_user["status"] in [200, 202]
 
@@ -113,7 +121,8 @@ def test_add_referrals():
     print_line()
     nreferrer_user = hash_pass(referr_email_list[0])
     for sec_lvl in referr_email_list_second_level:
-        valid_user = userlib.register(sec_lvl, other_pass, other_pass, nreferrer_user, first, last)
+        ipaddress = fake.ipv4_public(network=False, address_class=None)
+        valid_user = userlib.register(sec_lvl, other_pass, other_pass, nreferrer_user, first, last, ipaddress)
         print(valid_user)
         assert valid_user["status"] in [200, 202]
     
@@ -123,7 +132,8 @@ def test_add_referrals():
     print_line()
     nreferrer_user_2 = hash_pass(referr_email_list_second_level[0])
     for third_lvl in referr_email_list_third_level:
-        valid_user = userlib.register(third_lvl, other_pass, other_pass, nreferrer_user_2, first, last)
+        ipaddress = fake.ipv4_public(network=False, address_class=None)
+        valid_user = userlib.register(third_lvl, other_pass, other_pass, nreferrer_user_2, first, last, ipaddress)
         print(valid_user)
         assert valid_user["status"] in [200, 202]
 

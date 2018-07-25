@@ -16,6 +16,11 @@ validate-email = "*"
 pytest-expect = "*"
 crayons = "*"
 email-validator = "*"
+rq = "*"
+requests = "*"
+stripe = "*"
+hashids = "*"
+faker = "*"
 
 [dev-packages]
 pylint = "*"

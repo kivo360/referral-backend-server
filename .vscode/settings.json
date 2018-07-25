@@ -1,3 +1,4 @@
 {
-    "python.pythonPath": "/home/kevin/.local/share/virtualenvs/referral-system-hktGMlMH/bin/python"
+    "python.pythonPath": "/home/kevin/.local/share/virtualenvs/referral-system-hktGMlMH/bin/python",
+    "python.jediEnabled": false
 }
