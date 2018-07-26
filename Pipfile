@@ -21,6 +21,7 @@ requests = "*"
 stripe = "*"
 hashids = "*"
 faker = "*"
+"psycopg2" = "*"
 
 [dev-packages]
 pylint = "*"

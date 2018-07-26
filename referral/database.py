@@ -16,7 +16,7 @@ from referral.util import referral_hash
 salt = str("a6ecdd933b3842bcb467fed4073cb852")
 hashids = Hashids(salt=salt)
 
-db = dataset.connect(TESTDB, row_type=dict)
+db = dataset.connect(DB_URL, row_type=dict)
 
 
 
