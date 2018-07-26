@@ -85,7 +85,8 @@ def referral_hash(email):
     # Or you can remove the extra "=" at the end
 
     result = result.strip(b'=')
-    return str(result)
+    
+    return str(result.decode("utf-8"))
 
 
 
