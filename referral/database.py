@@ -238,8 +238,8 @@ class User(object):
             # Check if the password and confirm match
             
             exist_user = self.userdb.find_one(ip=ip)
-            # if exist_user is not None:
-            #     return formatting(StatusCodes.BADREQ.value, "Sorry, you can't use the same IP Address twice", {})
+            if exist_user is not None:
+                return formatting(StatusCodes.BADREQ.value, "Sorry, you can't use the same IP Address twice", {})
 
 
 
