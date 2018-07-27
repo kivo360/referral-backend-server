@@ -240,7 +240,7 @@ class User(object):
             exist_user = self.userdb.find_one(ip=ip)
             print(ip, file=sys.stderr)
             if exist_user is not None:
-                return formatting(StatusCodes.BADREQ.value, "Sorry, you can't use the same IP Address twice", {})
+                return formatting(StatusCodes.BADREQ.value, "Sorry, you can't use the same computer to register twice", {})
 
 
 
