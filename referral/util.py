@@ -26,12 +26,12 @@ stripe.api_key = "sk_live_WxCFh6xG9z079NoOOy4Nufbp"
 
 
 
-def send_simple_message(subject, html_template):
+def send_simple_message(email, subject, html_template):
     return requests.post(
         "https://api.mailgun.net/v3/funguana.com/messages",
         auth=("api", "key-b42d805f39588a464b8db0daaeb0d380"),
-        data={"from": "Funguana <kevin@funguana.com>",
-              "to": ["kah.kevin.hill@gmail.com"],
+        data={"from": "Funguana, Inc <kevin@funguana.com>",
+              "to": [email],
               "subject": "{}".format(subject),
               "html": "<html>{}</html>".format(html_template)
         })

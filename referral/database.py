@@ -12,7 +12,7 @@ import fire
 from validate_email import validate_email
 
 from referral.config import DB_URL, TESTDB, REWARDS
-from referral.util import referral_hash
+from referral.util import referral_hash, send_simple_message
 salt = str("a6ecdd933b3842bcb467fed4073cb852")
 hashids = Hashids(salt=salt)
 
@@ -121,7 +121,7 @@ class User(object):
             is_valid = validate_email(email)
 
             if is_valid is False:
-                return formatting(StatusCodes.BADREQ.value, "Invalid Email Format", {})
+                return formatting(StatusCodes.BADREQ.value, "Make sure the email is spelled correctly.", {})
 
             self.current_user(email)
             if self.user is None:
@@ -161,10 +161,10 @@ class User(object):
     def admin_remove(self, email):
 
         try:
-            is_valid = validate_email(email)
+            is_valid = validate_email(email, verify=True)
 
             if is_valid is False:
-                return formatting(StatusCodes.BADREQ.value, "Invalid Email Format", {})
+                return formatting(StatusCodes.BADREQ.value, "Make sure the email is spelled correctly.", {})
             
             self.current_user(email)
             
@@ -191,10 +191,10 @@ class User(object):
 
     def login(self, email, password):
         try:
-            is_valid = validate_email(email)
+            is_valid = validate_email(email, verify=True)
 
             if is_valid is False:
-                return formatting(StatusCodes.BADREQ.value, "Invalid Email Format", {})
+                return formatting(StatusCodes.BADREQ.value, "Make sure the email is spelled correctly.", {})
 
             self.current_user(email)
             if self.user is None:
@@ -218,10 +218,10 @@ class User(object):
 
     def register(self, email, password, confirm, referrer, first, last, ip):
         try:
-            is_valid = validate_email(email)
+            is_valid = validate_email(email, verify=True)
 
             if is_valid is False:
-                return formatting(StatusCodes.BADREQ.value, "Invalid Email Format", {})
+                return formatting(StatusCodes.BADREQ.value, "Make sure the email is spelled correctly.", {})
 
 
             self.current_user(email)
@@ -233,11 +233,12 @@ class User(object):
             if self.user != None:
                 cp_user = deepcopy(self.user)
                 cp_user.pop("password", None)
-                return formatting(StatusCodes.ACCEPTED.value, "User Already Exist", cp_user)
+                return formatting(StatusCodes.FORBIDDEN.value, "User Already Exist", cp_user)
 
             # Check if the password and confirm match
             
             exist_user = self.userdb.find_one(ip=ip)
+            print(ip, file=sys.stderr)
             if exist_user is not None:
                 return formatting(StatusCodes.BADREQ.value, "Sorry, you can't use the same IP Address twice", {})
 
@@ -274,7 +275,21 @@ class User(object):
                 return formatting(StatusCodes.MYBAD.value, "Looks like something went wrong", {})
 
             user_info.pop("password", None)
-
+            send_simple_message(email, "Thank You For Pre-Registering To Funguana!", 
+                """
+                    <h2>Hi {}!</h2>
+                    <br />
+                    <br />
+                    <p>You're getting this because you entered in your email for Funguana's Pre-Register. We wanted to say thank you for entering everything in. When we launch, we will give prizes to people based on the number of people they invited for the prelaunch. Please go to the website: referral.funguaservices.com with your email and password to see your progress.
+                    </p>
+                    <br /><br />
+                    <p>You'll be hearing from us very shortly!</p>
+                    <br /><br />
+                    <p>Best,</p>
+                    <p>Kevin Hill</p>
+                    <p>Funguana, CEO</p>
+                """.format(first)
+            )
             return formatting(StatusCodes.OK.value, "User successfully created", user_info)
         except Exception:
             return formatting(StatusCodes.MYBAD.value, "Looks like an unexpected error occured", {})
@@ -282,9 +297,10 @@ class User(object):
 
     def add_user_information(self, email, info_type, info):
         """ Should be called inside of python-rq function"""
-        is_valid = validate_email(email)
+        is_valid = validate_email(email, verify=True)
+
         if is_valid is False:
-            return formatting(StatusCodes.BADREQ.value, "Email isn't valid", {})
+            return formatting(StatusCodes.BADREQ.value, "Make sure the email is spelled correctly.", {})
         
 
         self.current_user(email)
@@ -347,6 +363,9 @@ class DBCli(object):
     
     def drop_user_referral(self):
         db['user_referral'].drop_table()
+
+    def purge_users(self):
+        db['user_referral'].delete()
 
     def init_user(self):
         user_table = db.create_table("user_referral")

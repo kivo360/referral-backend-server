@@ -22,6 +22,7 @@ stripe = "*"
 hashids = "*"
 faker = "*"
 "psycopg2" = "*"
+"py3dns" = "*"
 
 [dev-packages]
 pylint = "*"

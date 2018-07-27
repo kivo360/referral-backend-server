@@ -55,19 +55,23 @@ async def user_register(request):
     referrer = request.json.get("referrer", None)
     first = request.json.get("first", None)
     last = request.json.get("last", None)
+    ip = request.json.get("ip", None)
     
-    should_continue = any_none([email, password, confirm, first, last])
+    # Make sure to collect the public IP from the client
+    should_continue = any_none([email, password, confirm, first, last, ip])
     if should_continue == False:
         missing = which_none({
             "email": email,
             "password": password,
             "confirm": confirm,
             "first": first,
-            "last": last
+            "last": last,
+            "ip": ip
         })
+        
         wrong = formatting(400, "You're not giving us all of the necessary data", {"missing": missing})
         return json(wrong, status=wrong['status'])
-    stmt = user_db.register(email, password, confirm, referrer, first, last, request.ip)
+    stmt = user_db.register(email, password, confirm, referrer, first, last, ip)
 
     return json(stmt, status=stmt['status'])
 

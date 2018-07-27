@@ -24307,179 +24307,6 @@ if (true) {
 
 /***/ }),
 
-/***/ "Gj0I":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__ = __webpack_require__("Dd8w");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__("GiK3");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rc_notification__ = __webpack_require__("Hx0i");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__icon__ = __webpack_require__("FC3+");
-
-
-
-
-var notificationInstance = {};
-var defaultDuration = 4.5;
-var defaultTop = 24;
-var defaultBottom = 24;
-var defaultPlacement = 'topRight';
-var defaultGetContainer = void 0;
-function setNotificationConfig(options) {
-    var duration = options.duration,
-        placement = options.placement,
-        bottom = options.bottom,
-        top = options.top,
-        getContainer = options.getContainer;
-
-    if (duration !== undefined) {
-        defaultDuration = duration;
-    }
-    if (placement !== undefined) {
-        defaultPlacement = placement;
-    }
-    if (bottom !== undefined) {
-        defaultBottom = bottom;
-    }
-    if (top !== undefined) {
-        defaultTop = top;
-    }
-    if (getContainer !== undefined) {
-        defaultGetContainer = getContainer;
-    }
-}
-function getPlacementStyle(placement) {
-    var style = void 0;
-    switch (placement) {
-        case 'topLeft':
-            style = {
-                left: 0,
-                top: defaultTop,
-                bottom: 'auto'
-            };
-            break;
-        case 'topRight':
-            style = {
-                right: 0,
-                top: defaultTop,
-                bottom: 'auto'
-            };
-            break;
-        case 'bottomLeft':
-            style = {
-                left: 0,
-                top: 'auto',
-                bottom: defaultBottom
-            };
-            break;
-        default:
-            style = {
-                right: 0,
-                top: 'auto',
-                bottom: defaultBottom
-            };
-            break;
-    }
-    return style;
-}
-function getNotificationInstance(prefixCls, placement, callback) {
-    var cacheKey = prefixCls + '-' + placement;
-    if (notificationInstance[cacheKey]) {
-        callback(notificationInstance[cacheKey]);
-        return;
-    }
-    __WEBPACK_IMPORTED_MODULE_2_rc_notification__["a" /* default */].newInstance({
-        prefixCls: prefixCls,
-        className: prefixCls + '-' + placement,
-        style: getPlacementStyle(placement),
-        getContainer: defaultGetContainer
-    }, function (notification) {
-        notificationInstance[cacheKey] = notification;
-        callback(notification);
-    });
-}
-var typeToIcon = {
-    success: 'check-circle-o',
-    info: 'info-circle-o',
-    error: 'cross-circle-o',
-    warning: 'exclamation-circle-o'
-};
-function notice(args) {
-    var outerPrefixCls = args.prefixCls || 'ant-notification';
-    var prefixCls = outerPrefixCls + '-notice';
-    var duration = args.duration === undefined ? defaultDuration : args.duration;
-    var iconNode = null;
-    if (args.icon) {
-        iconNode = __WEBPACK_IMPORTED_MODULE_1_react__["createElement"](
-            'span',
-            { className: prefixCls + '-icon' },
-            args.icon
-        );
-    } else if (args.type) {
-        var iconType = typeToIcon[args.type];
-        iconNode = __WEBPACK_IMPORTED_MODULE_1_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3__icon__["a" /* default */], { className: prefixCls + '-icon ' + prefixCls + '-icon-' + args.type, type: iconType });
-    }
-    var autoMarginTag = !args.description && iconNode ? __WEBPACK_IMPORTED_MODULE_1_react__["createElement"]('span', { className: prefixCls + '-message-single-line-auto-margin' }) : null;
-    getNotificationInstance(outerPrefixCls, args.placement || defaultPlacement, function (notification) {
-        notification.notice({
-            content: __WEBPACK_IMPORTED_MODULE_1_react__["createElement"](
-                'div',
-                { className: iconNode ? prefixCls + '-with-icon' : '' },
-                iconNode,
-                __WEBPACK_IMPORTED_MODULE_1_react__["createElement"](
-                    'div',
-                    { className: prefixCls + '-message' },
-                    autoMarginTag,
-                    args.message
-                ),
-                __WEBPACK_IMPORTED_MODULE_1_react__["createElement"](
-                    'div',
-                    { className: prefixCls + '-description' },
-                    args.description
-                ),
-                args.btn ? __WEBPACK_IMPORTED_MODULE_1_react__["createElement"](
-                    'span',
-                    { className: prefixCls + '-btn' },
-                    args.btn
-                ) : null
-            ),
-            duration: duration,
-            closable: true,
-            onClose: args.onClose,
-            key: args.key,
-            style: args.style || {},
-            className: args.className
-        });
-    });
-}
-var api = {
-    open: notice,
-    close: function close(key) {
-        Object.keys(notificationInstance).forEach(function (cacheKey) {
-            return notificationInstance[cacheKey].removeNotice(key);
-        });
-    },
-
-    config: setNotificationConfig,
-    destroy: function destroy() {
-        Object.keys(notificationInstance).forEach(function (cacheKey) {
-            notificationInstance[cacheKey].destroy();
-            delete notificationInstance[cacheKey];
-        });
-    }
-};
-['success', 'info', 'warning', 'error'].forEach(function (type) {
-    api[type] = function (args) {
-        return api.open(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default()({}, args, { type: type }));
-    };
-});
-api.warn = api.warning;
-/* harmony default export */ __webpack_exports__["a"] = (api);
-
-/***/ }),
-
 /***/ "GpqH":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -70046,19 +69873,6 @@ __webpack_require__("crlp")('observable');
 
 /***/ }),
 
-/***/ "QX4N":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__style_index_less__ = __webpack_require__("vtiu");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__style_index_less___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__style_index_less__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__index_less__ = __webpack_require__("Sydc");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__index_less___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__index_less__);
-
-
-
-/***/ }),
-
 /***/ "QaEu":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -84093,7 +83907,7 @@ var publicIp = __webpack_require__("RUXC");
     submit:
     /*#__PURE__*/
     __WEBPACK_IMPORTED_MODULE_0__babel_runtime_regenerator___default.a.mark(function submit(_ref, _ref2) {
-      var payload, call, put, params, ref, response;
+      var payload, call, put, params, ref, IP, response;
       return __WEBPACK_IMPORTED_MODULE_0__babel_runtime_regenerator___default.a.wrap(function submit$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
@@ -84102,35 +83916,38 @@ var publicIp = __webpack_require__("RUXC");
               call = _ref2.call, put = _ref2.put;
               params = Object(__WEBPACK_IMPORTED_MODULE_7__utils_utils__["b" /* getPageQuery */])();
               ref = params.ref;
-              publicIp.v4().then(function (ip) {
-                console.log(ip);
-              });
-              _context.next = 7;
+              _context.next = 6;
+              return publicIp.v4();
+
+            case 6:
+              IP = _context.sent;
+              _context.next = 9;
               return call(__WEBPACK_IMPORTED_MODULE_3__services_user__["d" /* registerUser */], __WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_objectSpread___default()({
-                referrer: ref
+                referrer: ref,
+                ip: IP
               }, payload));
 
-            case 7:
+            case 9:
               response = _context.sent;
               console.log(response);
 
               if (!(response.status === 200 || response.status === 202)) {
-                _context.next = 15;
+                _context.next = 17;
                 break;
               }
 
-              _context.next = 12;
+              _context.next = 14;
               return put({
                 type: 'registerHandle',
                 payload: response
               });
 
-            case 12:
+            case 14:
               Object(__WEBPACK_IMPORTED_MODULE_5__utils_userinfo__["e" /* setUserEmail */])(response.data.email);
-              _context.next = 15;
+              _context.next = 17;
               return put(__WEBPACK_IMPORTED_MODULE_2_dva_router__["routerRedux"].push('/dashboard/analysis'));
 
-            case 15:
+            case 17:
             case "end":
               return _context.stop();
           }
@@ -109577,17 +109394,13 @@ module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCE
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_core_js_json_stringify___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_core_js_json_stringify__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_objectSpread__ = __webpack_require__("irdN");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_objectSpread___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_objectSpread__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_antd_es_notification_style__ = __webpack_require__("QX4N");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_antd_es_notification__ = __webpack_require__("Gj0I");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_dva_fetch__ = __webpack_require__("WLft");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_dva_fetch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_dva_fetch__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_dva_router__ = __webpack_require__("7xWd");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_dva_router___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_dva_router__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__index__ = __webpack_require__("lVK7");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_antd_lib_upload_utils__ = __webpack_require__("3Luv");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_antd_lib_upload_utils___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_antd_lib_upload_utils__);
-
-
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_dva_fetch__ = __webpack_require__("WLft");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_dva_fetch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_dva_fetch__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_dva_router__ = __webpack_require__("7xWd");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_dva_router___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_dva_router__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__index__ = __webpack_require__("lVK7");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_antd_lib_upload_utils__ = __webpack_require__("3Luv");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_antd_lib_upload_utils___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_antd_lib_upload_utils__);
 
 
 
@@ -109620,12 +109433,10 @@ function checkStatus(response) {
     return response;
   }
 
-  var errortext = codeMessage[response.status] || response.statusText;
-
-  __WEBPACK_IMPORTED_MODULE_3_antd_es_notification__["a" /* default */].error({
-    message: "Request error ".concat(response.status, ": ").concat(response.url),
-    description: errortext
-  });
+  var errortext = codeMessage[response.status] || response.statusText; // notification.error({
+  //   message: `Request error ${response.status}: ${response.url}`,
+  //   description: errortext,
+  // });
 
   var error = new Error(errortext);
   error.name = response.status;
@@ -109684,7 +109495,7 @@ function request(url, options) {
     newOptions.mode = "no-cors";
   }
 
-  return __WEBPACK_IMPORTED_MODULE_4_dva_fetch___default()(urlDetails.server, newOptions).then(printResponse).then(checkStatus).then(function (response) {
+  return __WEBPACK_IMPORTED_MODULE_2_dva_fetch___default()(urlDetails.server, newOptions).then(printResponse).then(checkStatus).then(function (response) {
     console.log(response);
 
     if (newOptions.method === 'DELETE' || response.status === 204) {
@@ -109694,7 +109505,7 @@ function request(url, options) {
     return response.json();
   }).catch(function (e) {
     // console.dir(e.name);
-    var dispatch = __WEBPACK_IMPORTED_MODULE_6__index__["default"].dispatch;
+    var dispatch = __WEBPACK_IMPORTED_MODULE_4__index__["default"].dispatch;
     var status = e.name;
 
     if (status === 401) {
@@ -109705,17 +109516,17 @@ function request(url, options) {
     }
 
     if (status === 403) {
-      dispatch(__WEBPACK_IMPORTED_MODULE_5_dva_router__["routerRedux"].push('/exception/403'));
+      dispatch(__WEBPACK_IMPORTED_MODULE_3_dva_router__["routerRedux"].push('/exception/403'));
       return;
     }
 
     if (status <= 504 && status >= 500) {
-      dispatch(__WEBPACK_IMPORTED_MODULE_5_dva_router__["routerRedux"].push('/exception/500'));
+      dispatch(__WEBPACK_IMPORTED_MODULE_3_dva_router__["routerRedux"].push('/exception/500'));
       return;
     }
 
     if (status >= 404 && status < 422) {
-      dispatch(__WEBPACK_IMPORTED_MODULE_5_dva_router__["routerRedux"].push('/exception/404'));
+      dispatch(__WEBPACK_IMPORTED_MODULE_3_dva_router__["routerRedux"].push('/exception/404'));
     }
   });
 }
@@ -114293,22 +114104,220 @@ module.exports = function (it) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+
+// EXTERNAL MODULE: ./node_modules/af-webpack/node_modules/@babel/runtime/regenerator/index.js
+var regenerator = __webpack_require__("zIwb");
+var regenerator_default = /*#__PURE__*/__webpack_require__.n(regenerator);
+
+// EXTERNAL MODULE: ./node_modules/af-webpack/node_modules/@babel/runtime/helpers/asyncToGenerator.js
+var asyncToGenerator = __webpack_require__("JtKo");
+var asyncToGenerator_default = /*#__PURE__*/__webpack_require__.n(asyncToGenerator);
+
+// EXTERNAL MODULE: ./node_modules/antd/es/style/index.less
+var style = __webpack_require__("vtiu");
+var style_default = /*#__PURE__*/__webpack_require__.n(style);
+
+// EXTERNAL MODULE: ./node_modules/antd/es/notification/style/index.less
+var notification_style = __webpack_require__("Sydc");
+var notification_style_default = /*#__PURE__*/__webpack_require__.n(notification_style);
+
+// CONCATENATED MODULE: ./node_modules/antd/es/notification/style/index.js
+
+
+// EXTERNAL MODULE: ./node_modules/babel-runtime/helpers/extends.js
+var helpers_extends = __webpack_require__("Dd8w");
+var extends_default = /*#__PURE__*/__webpack_require__.n(helpers_extends);
+
+// EXTERNAL MODULE: ./node_modules/react/index.js
+var react = __webpack_require__("GiK3");
+var react_default = /*#__PURE__*/__webpack_require__.n(react);
+
+// EXTERNAL MODULE: ./node_modules/rc-notification/es/index.js + 2 modules
+var es = __webpack_require__("Hx0i");
+
+// EXTERNAL MODULE: ./node_modules/antd/es/icon/index.js
+var icon = __webpack_require__("FC3+");
+
+// CONCATENATED MODULE: ./node_modules/antd/es/notification/index.js
+
+
+
+
+var notificationInstance = {};
+var defaultDuration = 4.5;
+var defaultTop = 24;
+var defaultBottom = 24;
+var defaultPlacement = 'topRight';
+var defaultGetContainer = void 0;
+function setNotificationConfig(options) {
+    var duration = options.duration,
+        placement = options.placement,
+        bottom = options.bottom,
+        top = options.top,
+        getContainer = options.getContainer;
+
+    if (duration !== undefined) {
+        defaultDuration = duration;
+    }
+    if (placement !== undefined) {
+        defaultPlacement = placement;
+    }
+    if (bottom !== undefined) {
+        defaultBottom = bottom;
+    }
+    if (top !== undefined) {
+        defaultTop = top;
+    }
+    if (getContainer !== undefined) {
+        defaultGetContainer = getContainer;
+    }
+}
+function getPlacementStyle(placement) {
+    var style = void 0;
+    switch (placement) {
+        case 'topLeft':
+            style = {
+                left: 0,
+                top: defaultTop,
+                bottom: 'auto'
+            };
+            break;
+        case 'topRight':
+            style = {
+                right: 0,
+                top: defaultTop,
+                bottom: 'auto'
+            };
+            break;
+        case 'bottomLeft':
+            style = {
+                left: 0,
+                top: 'auto',
+                bottom: defaultBottom
+            };
+            break;
+        default:
+            style = {
+                right: 0,
+                top: 'auto',
+                bottom: defaultBottom
+            };
+            break;
+    }
+    return style;
+}
+function getNotificationInstance(prefixCls, placement, callback) {
+    var cacheKey = prefixCls + '-' + placement;
+    if (notificationInstance[cacheKey]) {
+        callback(notificationInstance[cacheKey]);
+        return;
+    }
+    es["a" /* default */].newInstance({
+        prefixCls: prefixCls,
+        className: prefixCls + '-' + placement,
+        style: getPlacementStyle(placement),
+        getContainer: defaultGetContainer
+    }, function (notification) {
+        notificationInstance[cacheKey] = notification;
+        callback(notification);
+    });
+}
+var typeToIcon = {
+    success: 'check-circle-o',
+    info: 'info-circle-o',
+    error: 'cross-circle-o',
+    warning: 'exclamation-circle-o'
+};
+function notice(args) {
+    var outerPrefixCls = args.prefixCls || 'ant-notification';
+    var prefixCls = outerPrefixCls + '-notice';
+    var duration = args.duration === undefined ? defaultDuration : args.duration;
+    var iconNode = null;
+    if (args.icon) {
+        iconNode = react["createElement"](
+            'span',
+            { className: prefixCls + '-icon' },
+            args.icon
+        );
+    } else if (args.type) {
+        var iconType = typeToIcon[args.type];
+        iconNode = react["createElement"](icon["a" /* default */], { className: prefixCls + '-icon ' + prefixCls + '-icon-' + args.type, type: iconType });
+    }
+    var autoMarginTag = !args.description && iconNode ? react["createElement"]('span', { className: prefixCls + '-message-single-line-auto-margin' }) : null;
+    getNotificationInstance(outerPrefixCls, args.placement || defaultPlacement, function (notification) {
+        notification.notice({
+            content: react["createElement"](
+                'div',
+                { className: iconNode ? prefixCls + '-with-icon' : '' },
+                iconNode,
+                react["createElement"](
+                    'div',
+                    { className: prefixCls + '-message' },
+                    autoMarginTag,
+                    args.message
+                ),
+                react["createElement"](
+                    'div',
+                    { className: prefixCls + '-description' },
+                    args.description
+                ),
+                args.btn ? react["createElement"](
+                    'span',
+                    { className: prefixCls + '-btn' },
+                    args.btn
+                ) : null
+            ),
+            duration: duration,
+            closable: true,
+            onClose: args.onClose,
+            key: args.key,
+            style: args.style || {},
+            className: args.className
+        });
+    });
+}
+var api = {
+    open: notice,
+    close: function close(key) {
+        Object.keys(notificationInstance).forEach(function (cacheKey) {
+            return notificationInstance[cacheKey].removeNotice(key);
+        });
+    },
+
+    config: setNotificationConfig,
+    destroy: function destroy() {
+        Object.keys(notificationInstance).forEach(function (cacheKey) {
+            notificationInstance[cacheKey].destroy();
+            delete notificationInstance[cacheKey];
+        });
+    }
+};
+['success', 'info', 'warning', 'error'].forEach(function (type) {
+    api[type] = function (args) {
+        return api.open(extends_default()({}, args, { type: type }));
+    };
+});
+api.warn = api.warning;
+/* harmony default export */ var es_notification = (api);
+// EXTERNAL MODULE: ./src/utils/request.js
+var request = __webpack_require__("vLgD");
+
+// EXTERNAL MODULE: ./node_modules/axios/index.js
+var axios = __webpack_require__("mtWM");
+var axios_default = /*#__PURE__*/__webpack_require__.n(axios);
+
+// EXTERNAL MODULE: ./node_modules/dva/router.js
+var router = __webpack_require__("7xWd");
+var router_default = /*#__PURE__*/__webpack_require__.n(router);
+
+// EXTERNAL MODULE: ./src/index.js + 2 modules
+var src = __webpack_require__("lVK7");
+
+// CONCATENATED MODULE: ./src/services/user.js
 /* harmony export (immutable) */ __webpack_exports__["b"] = query;
 /* harmony export (immutable) */ __webpack_exports__["c"] = queryCurrent;
 /* harmony export (immutable) */ __webpack_exports__["a"] = loginUser;
 /* harmony export (immutable) */ __webpack_exports__["d"] = registerUser;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_regenerator__ = __webpack_require__("zIwb");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_regenerator__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_asyncToGenerator__ = __webpack_require__("JtKo");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_asyncToGenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_asyncToGenerator__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_antd_es_notification_style__ = __webpack_require__("QX4N");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_antd_es_notification__ = __webpack_require__("Gj0I");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_request__ = __webpack_require__("vLgD");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_axios__ = __webpack_require__("mtWM");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_dva_router__ = __webpack_require__("7xWd");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_dva_router___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_dva_router__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__index__ = __webpack_require__("lVK7");
 
 
 
@@ -114339,7 +114348,7 @@ var slashes = protocol.concat("//");
 var host = slashes.concat(window.location.host); // const ref = host.concat("/#/user/register?ref=")
 // const rh = ref.concat(user.referral_hash)
 
-var instance = __WEBPACK_IMPORTED_MODULE_5_axios___default.a.create({
+var instance = axios_default.a.create({
   baseURL: host,
   timeout: 1000,
   headers: {
@@ -114364,7 +114373,7 @@ function checkStatus(response) {
 
   var errortext = codeMessage[response.status] || response.statusText;
 
-  __WEBPACK_IMPORTED_MODULE_3_antd_es_notification__["a" /* default */].error({
+  es_notification.error({
     message: "Request error ".concat(response.status, ": ").concat(response.url),
     description: errortext
   });
@@ -114384,14 +114393,14 @@ function query() {
 // Get the user information here
 
 function _query() {
-  _query = __WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_asyncToGenerator___default()(
+  _query = asyncToGenerator_default()(
   /*#__PURE__*/
-  __WEBPACK_IMPORTED_MODULE_0__babel_runtime_regenerator___default.a.mark(function _callee() {
-    return __WEBPACK_IMPORTED_MODULE_0__babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+  regenerator_default.a.mark(function _callee() {
+    return regenerator_default.a.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            return _context.abrupt("return", Object(__WEBPACK_IMPORTED_MODULE_4__utils_request__["a" /* default */])('/api/users'));
+            return _context.abrupt("return", Object(request["a" /* default */])('/api/users'));
 
           case 1:
           case "end":
@@ -114408,23 +114417,25 @@ function queryCurrent(_x) {
 } // Login here
 
 function _queryCurrent() {
-  _queryCurrent = __WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_asyncToGenerator___default()(
+  _queryCurrent = asyncToGenerator_default()(
   /*#__PURE__*/
-  __WEBPACK_IMPORTED_MODULE_0__babel_runtime_regenerator___default.a.mark(function _callee2(params) {
-    return __WEBPACK_IMPORTED_MODULE_0__babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
+  regenerator_default.a.mark(function _callee2(params) {
+    return regenerator_default.a.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
             return _context2.abrupt("return", instance.post('/user/info', params).then(checkStatus).then(function (response) {
-              // console.log(response);
+              console.log(response);
               return response.data;
             }).catch(function (err) {
-              __WEBPACK_IMPORTED_MODULE_3_antd_es_notification__["a" /* default */].error({
+              console.log(err.response);
+
+              es_notification.error({
                 message: err.response.status,
-                description: err.message
+                description: err.reponse.msg
               });
 
-              var dispatch = __WEBPACK_IMPORTED_MODULE_7__index__["default"].dispatch;
+              var dispatch = src["default"].dispatch;
               var status = err.name;
 
               if (status === 401) {
@@ -114435,17 +114446,17 @@ function _queryCurrent() {
               }
 
               if (status === 403) {
-                dispatch(__WEBPACK_IMPORTED_MODULE_6_dva_router__["routerRedux"].push('/exception/403'));
+                dispatch(router["routerRedux"].push('/exception/403'));
                 return;
               }
 
               if (status <= 504 && status >= 500) {
-                dispatch(__WEBPACK_IMPORTED_MODULE_6_dva_router__["routerRedux"].push('/exception/500'));
+                dispatch(router["routerRedux"].push('/exception/500'));
                 return;
               }
 
               if (status >= 404 && status < 422) {
-                dispatch(__WEBPACK_IMPORTED_MODULE_6_dva_router__["routerRedux"].push('/exception/404'));
+                dispatch(router["routerRedux"].push('/exception/404'));
               }
             }));
 
@@ -114464,10 +114475,10 @@ function loginUser(_x2) {
 } // Register here
 
 function _loginUser() {
-  _loginUser = __WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_asyncToGenerator___default()(
+  _loginUser = asyncToGenerator_default()(
   /*#__PURE__*/
-  __WEBPACK_IMPORTED_MODULE_0__babel_runtime_regenerator___default.a.mark(function _callee3(params) {
-    return __WEBPACK_IMPORTED_MODULE_0__babel_runtime_regenerator___default.a.wrap(function _callee3$(_context3) {
+  regenerator_default.a.mark(function _callee3(params) {
+    return regenerator_default.a.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
@@ -114479,15 +114490,17 @@ function _loginUser() {
             //   return response.data;
             // })
             .then(function (response) {
-              // console.log(response);
+              console.log(response);
               return response.data;
             }).catch(function (err) {
-              __WEBPACK_IMPORTED_MODULE_3_antd_es_notification__["a" /* default */].error({
+              console.log(err.response);
+
+              es_notification.error({
                 message: err.response.status,
-                description: err.message
+                description: err.reponse.msg
               });
 
-              var dispatch = __WEBPACK_IMPORTED_MODULE_7__index__["default"].dispatch;
+              var dispatch = src["default"].dispatch;
               var status = err.name;
 
               if (status === 401) {
@@ -114498,17 +114511,17 @@ function _loginUser() {
               }
 
               if (status === 403) {
-                dispatch(__WEBPACK_IMPORTED_MODULE_6_dva_router__["routerRedux"].push('/exception/403'));
+                dispatch(router["routerRedux"].push('/exception/403'));
                 return;
               }
 
               if (status <= 504 && status >= 500) {
-                dispatch(__WEBPACK_IMPORTED_MODULE_6_dva_router__["routerRedux"].push('/exception/500'));
+                dispatch(router["routerRedux"].push('/exception/500'));
                 return;
               }
 
               if (status >= 404 && status < 422) {
-                dispatch(__WEBPACK_IMPORTED_MODULE_6_dva_router__["routerRedux"].push('/exception/404'));
+                dispatch(router["routerRedux"].push('/exception/404'));
               } // localStorage.setItem("loggedin_user", referralObject.username);
 
             }));
@@ -114528,23 +114541,25 @@ function registerUser(_x3) {
 }
 
 function _registerUser() {
-  _registerUser = __WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_asyncToGenerator___default()(
+  _registerUser = asyncToGenerator_default()(
   /*#__PURE__*/
-  __WEBPACK_IMPORTED_MODULE_0__babel_runtime_regenerator___default.a.mark(function _callee4(params) {
-    return __WEBPACK_IMPORTED_MODULE_0__babel_runtime_regenerator___default.a.wrap(function _callee4$(_context4) {
+  regenerator_default.a.mark(function _callee4(params) {
+    return regenerator_default.a.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
             return _context4.abrupt("return", instance.post('/user/register', params).then(checkStatus).then(function (response) {
-              // console.log(response);
+              console.log(response);
               return response.data;
             }).catch(function (err) {
-              __WEBPACK_IMPORTED_MODULE_3_antd_es_notification__["a" /* default */].error({
+              console.log(err.response);
+
+              es_notification.error({
                 message: err.response.status,
                 description: err.message
               });
 
-              var dispatch = __WEBPACK_IMPORTED_MODULE_7__index__["default"].dispatch;
+              var dispatch = src["default"].dispatch;
               var status = err.name;
 
               if (status === 401) {
@@ -114555,17 +114570,17 @@ function _registerUser() {
               }
 
               if (status === 403) {
-                dispatch(__WEBPACK_IMPORTED_MODULE_6_dva_router__["routerRedux"].push('/exception/403'));
+                dispatch(router["routerRedux"].push('/exception/403'));
                 return;
               }
 
               if (status <= 504 && status >= 500) {
-                dispatch(__WEBPACK_IMPORTED_MODULE_6_dva_router__["routerRedux"].push('/exception/500'));
+                dispatch(router["routerRedux"].push('/exception/500'));
                 return;
               }
 
               if (status >= 404 && status < 422) {
-                dispatch(__WEBPACK_IMPORTED_MODULE_6_dva_router__["routerRedux"].push('/exception/404'));
+                dispatch(router["routerRedux"].push('/exception/404'));
               }
             }));
 
