@@ -13510,11 +13510,23 @@ i.trigger___3Dsd1:hover {
 .prizeGrid___14W8J {
   width: 33%;
   text-align: center;
-  min-height: 10vh;
+  min-height: 20vh;
   border-bottom: 5px solid rgba(42, 175, 60, 0);
 }
 .prizeGrid___14W8J:hover {
   border-bottom: 5px solid rgba(42, 175, 60, 0.37);
+}
+@media screen and (max-width: 576px) {
+  .prizeGrid___14W8J {
+    width: 50%;
+    min-height: 50vh;
+  }
+}
+@media screen and (max-width: 768px) {
+  .prizeGrid___14W8J {
+    width: 50%;
+    min-height: 30vh;
+  }
 }
 .prepurchaseGrid___b8wyh {
   width: 100%;
@@ -14901,9 +14913,39 @@ form .ant-input-group-wrapper {
 /* stylelint-disable no-duplicate-selectors */
 /* stylelint-disable declaration-bang-space-before,no-duplicate-selectors */
 /* stylelint-disable declaration-bang-space-before,no-duplicate-selectors,string-no-newline */
+.youtubeContainerMain___3AZfX {
+  width: 500px;
+  margin: 0 auto;
+}
+@media screen and (max-width: 576px) {
+  .youtubeContainerMain___3AZfX {
+    width: 95%;
+  }
+}
+.youtubeContainer___3FIQN {
+  position: relative;
+  padding-bottom: 56.25%;
+  padding-top: 30px;
+  height: 0;
+  overflow: hidden;
+}
+.youtubeContainer___3FIQN iframe,
+.youtubeContainer___3FIQN object,
+.youtubeContainer___3FIQN embed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
 .main____pV_J {
   width: 500px;
   margin: 0 auto;
+}
+@media screen and (max-width: 576px) {
+  .main____pV_J {
+    width: 95%;
+  }
 }
 .main____pV_J .ant-form-item {
   margin-bottom: 24px;

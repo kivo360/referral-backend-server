@@ -21867,7 +21867,7 @@ module.exports = composeArgs;
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-module.exports = {"main":"main____pV_J","getCaptcha":"getCaptcha___3Ac2M","submit":"submit___1GZsy","login":"login___2LRRD","success":"success___1s2uC","warning":"warning___1mxFE","error":"error___cLR7E","progress-pass":"progress-pass___2jaF3","progress":"progress___39kYU"};
+module.exports = {"youtubeContainerMain":"youtubeContainerMain___3AZfX","youtubeContainer":"youtubeContainer___3FIQN","main":"main____pV_J","getCaptcha":"getCaptcha___3Ac2M","submit":"submit___1GZsy","login":"login___2LRRD","success":"success___1s2uC","warning":"warning___1mxFE","error":"error___cLR7E","progress-pass":"progress-pass___2jaF3","progress":"progress___39kYU"};
 
 /***/ }),
 
@@ -91029,23 +91029,21 @@ function (_Component) {
           help = _this$state2.help,
           visible = _this$state2.visible;
       var opts = {
-        height: '300',
-        width: '500',
         playerVars: {
           // https://developers.google.com/youtube/player_parameters
           autoplay: 1
         }
       };
       return jsx_default()("div", {}, void 0, jsx_default()("div", {
-        style: {
-          width: '500px',
-          margin: 'auto'
-        }
+        className: Register_default.a.youtubeContainerMain
+      }, void 0, jsx_default()("div", {
+        className: Register_default.a.youtubeContainer
       }, void 0, jsx_default()(es_YouTube, {
         videoId: "B4BSVYTEDrM",
-        opts: opts,
+        opts: opts // containerClassName={}
+        ,
         onReady: this._onReady
-      })), jsx_default()("div", {
+      }))), jsx_default()("div", {
         className: Register_default.a.main
       }, void 0, jsx_default()("h3", {
         style: {

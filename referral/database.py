@@ -208,7 +208,7 @@ class User(object):
             wo_pass.pop('password', None)
 
             return formatting(StatusCodes.OK.value, "Login Successful", wo_pass)
-        except Exception:
+        except Exception as e:
             print(e, file=sys.stderr)
             return formatting(StatusCodes.MYBAD.value, "Looks like an unexpected error occured", {})
         
@@ -292,7 +292,7 @@ class User(object):
                 """.format(first)
             )
             return formatting(StatusCodes.OK.value, "User successfully created", user_info)
-        except Exception:
+        except Exception as e:
             print(e, file=sys.stderr)
             return formatting(StatusCodes.MYBAD.value, "Looks like an unexpected error occured", {})
         
