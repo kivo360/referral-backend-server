@@ -209,6 +209,7 @@ class User(object):
 
             return formatting(StatusCodes.OK.value, "Login Successful", wo_pass)
         except Exception:
+            print(e, file=sys.stderr)
             return formatting(StatusCodes.MYBAD.value, "Looks like an unexpected error occured", {})
         
 
@@ -292,6 +293,7 @@ class User(object):
             )
             return formatting(StatusCodes.OK.value, "User successfully created", user_info)
         except Exception:
+            print(e, file=sys.stderr)
             return formatting(StatusCodes.MYBAD.value, "Looks like an unexpected error occured", {})
         
 
