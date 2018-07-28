@@ -21867,7 +21867,7 @@ module.exports = composeArgs;
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-module.exports = {"youtubeContainerMain":"youtubeContainerMain___3AZfX","youtubeContainer":"youtubeContainer___3FIQN","main":"main____pV_J","getCaptcha":"getCaptcha___3Ac2M","submit":"submit___1GZsy","login":"login___2LRRD","success":"success___1s2uC","warning":"warning___1mxFE","error":"error___cLR7E","progress-pass":"progress-pass___2jaF3","progress":"progress___39kYU"};
+module.exports = {"videoWrapper":"videoWrapper___16UTO","youtubeContainerMain":"youtubeContainerMain___3AZfX","youtubeContainer":"youtubeContainer___3FIQN","main":"main____pV_J","getCaptcha":"getCaptcha___3Ac2M","submit":"submit___1GZsy","login":"login___2LRRD","success":"success___1s2uC","warning":"warning___1mxFE","error":"error___cLR7E","progress-pass":"progress-pass___2jaF3","progress":"progress___39kYU"};
 
 /***/ }),
 
@@ -91098,8 +91098,8 @@ function (_Component) {
           validator: this.checkConfirm
         }]
       })(_ref6)), jsx_default()(FormItem, {}, void 0, jsx_default()(es_button["a" /* default */], {
-        size: "large" // onClick={submitting}
-        ,
+        size: "large",
+        loading: submitting,
         className: Register_default.a.submit,
         type: "primary",
         htmlType: "submit"
@@ -114428,11 +114428,11 @@ var codeMessage = {
   502: 'Gateway error.',
   503: 'The service is unavailable and the server is temporarily overloaded or maintained.',
   504: 'The gateway timed out.'
-};
-var protocol = window.location.protocol;
-var slashes = protocol.concat("//");
-var host = slashes.concat(window.location.host); // const host = "http://localhost:9000"
-// const ref = host.concat("/#/user/register?ref=")
+}; // const protocol = window.location.protocol;
+// const slashes = protocol.concat("//");
+// const host = slashes.concat(window.location.host);
+
+var host = "http://localhost:9000"; // const ref = host.concat("/#/user/register?ref=")
 // const rh = ref.concat(user.referral_hash)
 
 var instance = axios_default.a.create({
