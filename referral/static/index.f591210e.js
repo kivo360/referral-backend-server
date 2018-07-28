@@ -114428,11 +114428,11 @@ var codeMessage = {
   502: 'Gateway error.',
   503: 'The service is unavailable and the server is temporarily overloaded or maintained.',
   504: 'The gateway timed out.'
-}; // const protocol = window.location.protocol;
-// const slashes = protocol.concat("//");
-// const host = slashes.concat(window.location.host);
-
-var host = "http://localhost:9000"; // const ref = host.concat("/#/user/register?ref=")
+};
+var protocol = window.location.protocol;
+var slashes = protocol.concat("//");
+var host = slashes.concat(window.location.host); // const host = "http://localhost:9000"
+// const ref = host.concat("/#/user/register?ref=")
 // const rh = ref.concat(user.referral_hash)
 
 var instance = axios_default.a.create({
