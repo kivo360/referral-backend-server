@@ -17,16 +17,19 @@ limiter = Limiter(app, global_limits=['100 per hour', '40 per minute'])
 
 
 
-app.static('/', './referral/static')
-app.static('/', './referral/static/index.html')
+# app.static('/', './referral/static')
+# app.static('/', './referral/static/index.html')
 app.blueprint(user_bp)
+
+
+
 @app.exception(NotFound)
 async def ignore_404s(request, exception):
 	return text("Yep, I totally found the page: {}".format(request.url))
 
 
 @app.exception(SanicException)
-async def ignore_404s(request, exception):
+async def sanic_except(request, exception):
 	return text("HAHAHAHAH: {}".format(request.url))
 
 

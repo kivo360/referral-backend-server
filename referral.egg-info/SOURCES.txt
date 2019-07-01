@@ -1,3 +1,4 @@
+setup.py
 referral/__init__.py
 referral/app.py
 referral/config.py

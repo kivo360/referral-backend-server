@@ -16,7 +16,7 @@ from referral.util import referral_hash, send_simple_message
 salt = str("a6ecdd933b3842bcb467fed4073cb852")
 hashids = Hashids(salt=salt)
 
-db = dataset.connect(DB_URL, row_type=dict)
+db = dataset.connect(TESTDB, row_type=dict)
 
 
 
@@ -191,7 +191,7 @@ class User(object):
 
     def login(self, email, password):
         try:
-            is_valid = validate_email(email, verify=True)
+            is_valid = validate_email(email)
 
             if is_valid is False:
                 return formatting(StatusCodes.BADREQ.value, "Make sure the email is spelled correctly.", {})
@@ -219,7 +219,7 @@ class User(object):
 
     def register(self, email, password, confirm, referrer, first, last, ip):
         try:
-            is_valid = validate_email(email, verify=True)
+            is_valid = validate_email(email)
 
             if is_valid is False:
                 return formatting(StatusCodes.BADREQ.value, "Make sure the email is spelled correctly.", {})

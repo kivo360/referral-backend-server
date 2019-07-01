@@ -11,11 +11,11 @@ user_db = User()
 user_bp = Blueprint('user', url_prefix="/user")
 
 
-@user_bp.route('/', methods=["POST", "OPTIONS"])
+@user_bp.post('/')
 async def bp_root(request):
     return json({'msg': 'This is pretty darn basic'})
 
-@user_bp.route('/info', methods=["POST", "OPTIONS"])
+@user_bp.post('/info')
 async def user_info(request):
     email = request.json.get("email", None)
     should_continue = any_none([email])
@@ -30,7 +30,7 @@ async def user_info(request):
     # return json({'my': 'blueprint'})
 
 
-@user_bp.route('/login', methods=["POST", "OPTIONS"])
+@user_bp.post('/login')
 async def user_login(request):
     email = request.json.get("email", None)
     password = request.json.get("password", None)

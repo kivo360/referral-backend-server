@@ -4,31 +4,18 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-sanic = "*"
-fire = "*"
-dataset = "*"
-pylint = "*"
-sanic-cors = "*"
-sanic-limiter = "*"
-referral = {editable = true, path = "."}
+fastapi = {extras = ["all"], version = "*"}
 python-decouple = "*"
-validate-email = "*"
-pytest-expect = "*"
-crayons = "*"
-email-validator = "*"
-rq = "*"
-requests = "*"
-stripe = "*"
+dataset = "*"
 hashids = "*"
-faker = "*"
-"psycopg2" = "*"
-"py3dns" = "*"
+stripe = "*"
+fire = "*"
+sqlalchemy = "*"
+validate-email = "*"
+sanic = "*"
+sanic-cors = "*"
 
 [dev-packages]
-pylint = "*"
 
 [requires]
 python_version = "3.6"
-
-[pipenv]
-allow_prereleases = true
